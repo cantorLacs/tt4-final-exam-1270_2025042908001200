@@ -10,6 +10,6 @@ namespace Data
 
         }
 
-        public DbSet<TaskItem> Tasks { get; set; }
+        public DbSet<Application> Applications { get; set; }
     }
 }

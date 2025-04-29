@@ -1,6 +1,6 @@
 namespace Models
 {
-    public class TaskItem
+    public class Application
     {
         public int Id { get; set; }
         public required string Company { get; set; }
