@@ -1,0 +1,19 @@
+# Dependencies
+**/node_modules
+**/dist
+**/build
+**/.angular
+
+# .NET
+**/bin
+**/obj
+**/out
+**/.vs
+**/.vscode
+
+# Misc
+**/.git
+**/.gitignore
+**/.env
+**/README.md
+**/.DS_Store

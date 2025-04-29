@@ -1,0 +1,61 @@
+<div class="container">
+  <h1>Job Applications</h1>
+  
+  <div class="actions">
+    <a [routerLink]="['/applications/new']" mat-raised-button color="primary">
+      <mat-icon>add</mat-icon> New Application
+    </a>
+  </div>
+
+  <mat-card *ngIf="error" class="error-card">
+    <mat-card-content>{{error}}</mat-card-content>
+  </mat-card>
+  
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+  
+  <table mat-table [dataSource]="applications" *ngIf="!isLoading && applications.length > 0" class="mat-elevation-z8">
+    <ng-container matColumnDef="company">
+      <th mat-header-cell *matHeaderCellDef> Company </th>
+      <td mat-cell *matCellDef="let application"> {{application.company}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef> Position </th>
+      <td mat-cell *matCellDef="let application"> {{application.position}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef> Status </th>
+      <td mat-cell *matCellDef="let application"> {{application.status}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="appliedDate">
+      <th mat-header-cell *matHeaderCellDef> Applied Date </th>
+      <td mat-cell *matCellDef="let application"> {{application.appliedDate | date:'mediumDate'}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let application">
+        <a [routerLink]="['/applications', application.id]" mat-icon-button color="primary" matTooltip="View Details">
+          <mat-icon>visibility</mat-icon>
+        </a>
+        <a [routerLink]="['/applications', application.id, 'edit']" mat-icon-button color="accent" matTooltip="Edit">
+          <mat-icon>edit</mat-icon>
+        </a>
+        <button mat-icon-button color="warn" (click)="deleteApplication(application.id)" matTooltip="Delete">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  
+  <div *ngIf="!isLoading && applications.length === 0" class="empty-state">
+    <p>No job applications found. Click "New Application" to add one.</p>
+  </div>
+</div>

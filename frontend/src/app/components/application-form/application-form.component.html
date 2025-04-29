@@ -1,0 +1,64 @@
+<div class="container">
+  <h1>{{isEditMode ? 'Edit' : 'Add'}} Job Application</h1>
+
+  <mat-card *ngIf="error" class="error-card">
+    <mat-card-content>{{error}}</mat-card-content>
+  </mat-card>
+
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  <form *ngIf="!isLoading" [formGroup]="applicationForm" (ngSubmit)="onSubmit()" class="application-form">
+    <mat-form-field appearance="outline">
+      <mat-label>Company</mat-label>
+      <input matInput formControlName="company" required>
+      <mat-error *ngIf="applicationForm.get('company')?.hasError('required')">
+        Company name is required
+      </mat-error>
+      <mat-error *ngIf="applicationForm.get('company')?.hasError('maxlength')">
+        Company name must be less than 100 characters
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Position</mat-label>
+      <input matInput formControlName="position" required>
+      <mat-error *ngIf="applicationForm.get('position')?.hasError('required')">
+        Position is required
+      </mat-error>
+      <mat-error *ngIf="applicationForm.get('position')?.hasError('maxlength')">
+        Position must be less than 100 characters
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status" required>
+        <mat-option *ngFor="let status of statusOptions" [value]="status">
+          {{status}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="applicationForm.get('status')?.hasError('required')">
+        Status is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Application Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="appliedDate" required>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="applicationForm.get('appliedDate')?.hasError('required')">
+        Application date is required
+      </mat-error>
+    </mat-form-field>
+
+    <div class="button-group">
+      <a mat-button [routerLink]="['/applications']">Cancel</a>
+      <button mat-raised-button color="primary" type="submit" [disabled]="applicationForm.invalid">
+        {{isEditMode ? 'Update' : 'Create'}}
+      </button>
+    </div>
+  </form>
+</div>

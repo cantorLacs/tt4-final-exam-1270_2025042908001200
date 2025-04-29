@@ -1,5 +1,5 @@
 services:
-  api:
+  backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -9,6 +9,8 @@ services:
         restart: true
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "5000:80"
     networks:
       - final_network
 
@@ -16,32 +18,34 @@ services:
     image: postgres:latest
     restart: always
     environment:
-      - POSTGRES_DB=tms_db
-      - POSTGRES_USER=tms_user
-      - POSTGRES_PASSWORD=tms_pass
+      - POSTGRES_DB=application_db
+      - POSTGRES_USER=app_user
+      - POSTGRES_PASSWORD=app_pass
     volumes:
       - pgdata:/var/lib/postgres/data
     networks:
       - final_network
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "tms_user", "-d", "tms_db"]
+      test: ["CMD", "pg_isready", "-U", "app_user", "-d", "application_db"]
       interval: 10s
       retries: 5
 
-  app:
+  frontend:
     build:
-      context: ./
+      context: ./frontend
       dockerfile: Dockerfile
     depends_on:
-      - api
+      - backend
     ports:
-      - 80:80
+      - "80:80"
     networks:
       - final_network
 
   adminer:
     image: adminer:latest
     restart: always
+    ports:
+      - "8080:8080"
     depends_on:
       db:
         condition: service_healthy

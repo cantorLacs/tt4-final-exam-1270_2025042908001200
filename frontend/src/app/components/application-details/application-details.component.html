@@ -1,0 +1,49 @@
+<div class="container">
+  <div class="header">
+    <h1>Job Application Details</h1>
+    <div class="actions">
+      <a [routerLink]="['/applications']" mat-button>
+        <mat-icon>arrow_back</mat-icon> Back to List
+      </a>
+    </div>
+  </div>
+
+  <mat-card *ngIf="error" class="error-card">
+    <mat-card-content>{{error}}</mat-card-content>
+  </mat-card>
+
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  <mat-card *ngIf="!isLoading && application" class="details-card">
+    <mat-card-header>
+      <mat-card-title>{{application.company}}</mat-card-title>
+      <mat-card-subtitle>{{application.position}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="detail-row">
+        <strong>Status:</strong>
+        <span>{{application.status}}</span>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="detail-row">
+        <strong>Applied Date:</strong>
+        <span>{{application.appliedDate | date:'longDate'}}</span>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <a [routerLink]="['/applications', application.id, 'edit']" mat-button color="primary">
+        <mat-icon>edit</mat-icon> Edit
+      </a>
+      <button mat-button color="warn" (click)="deleteApplication()">
+        <mat-icon>delete</mat-icon> Delete
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <div *ngIf="!isLoading && !application && !error" class="not-found">
+    <p>Application not found.</p>
+    <a [routerLink]="['/applications']" mat-raised-button color="primary">Back to List</a>
+  </div>
+</div>
